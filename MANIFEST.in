@@ -1,0 +1,4 @@
+include README.md
+recursive-include octoprint_caselightcontrol/templates *
+recursive-include octoprint_caselightcontrol/translations *
+recursive-include octoprint_caselightcontrol/static *
