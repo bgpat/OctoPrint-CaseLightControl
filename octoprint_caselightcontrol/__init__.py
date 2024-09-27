@@ -1,5 +1,6 @@
 # coding=utf-8
 from __future__ import absolute_import
+import re
 
 ### (Don't forget to remove me)
 # This is a basic skeleton for your plugin's __init__.py. You probably want to adjust the class name of your plugin
@@ -11,7 +12,7 @@ from __future__ import absolute_import
 
 import octoprint.plugin
 
-class CaselightcontrolPlugin(octoprint.plugin.SettingsPlugin,
+class CaseLightControlPlugin(octoprint.plugin.SettingsPlugin,
     octoprint.plugin.AssetPlugin,
     octoprint.plugin.TemplatePlugin
 ):
@@ -42,7 +43,7 @@ class CaselightcontrolPlugin(octoprint.plugin.SettingsPlugin,
         # for details.
         return {
             "caselightcontrol": {
-                "displayName": "Caselightcontrol Plugin",
+                "displayName": "Case Light Control",
                 "displayVersion": self._plugin_version,
 
                 # version check: github repository
@@ -56,11 +57,24 @@ class CaselightcontrolPlugin(octoprint.plugin.SettingsPlugin,
             }
         }
 
+    def parse_status(self, comm, line, *args, **kwargs):
+        try:
+            match = re.search("^echo:Case light: (.*?)\\s*$", line)
+            if match:
+                self._plugin_manager.send_plugin_message(self._identifier, { "status": match.group(1) })
+                self._logger.debug(f"status = {match.group(1)}")
+        except IndexError:
+            pass
+        except Exception as e:
+            self._logger.warn(f"failed to parse line: {e}")
+        finally:
+            return line
+
 
 # If you want your plugin to be registered within OctoPrint under a different name than what you defined in setup.py
 # ("OctoPrint-PluginSkeleton"), you may define that here. Same goes for the other metadata derived from setup.py that
 # can be overwritten via __plugin_xyz__ control properties. See the documentation for that.
-__plugin_name__ = "Caselightcontrol Plugin"
+__plugin_name__ = "Case Light Control"
 
 
 # Set the Python version your plugin is compatible with below. Recommended is Python 3 only for all new plugins.
@@ -70,9 +84,10 @@ __plugin_pythoncompat__ = ">=3,<4"  # Only Python 3
 
 def __plugin_load__():
     global __plugin_implementation__
-    __plugin_implementation__ = CaselightcontrolPlugin()
+    __plugin_implementation__ = CaseLightControlPlugin()
 
     global __plugin_hooks__
     __plugin_hooks__ = {
-        "octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
+        "octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information,
+        "octoprint.comm.protocol.gcode.received": __plugin_implementation__.parse_status,
     }

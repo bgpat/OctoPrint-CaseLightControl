@@ -1,0 +1,28 @@
+<form class="form-horizontal" onsubmit="return false;">
+  <div class="control-group">
+    <label class="control-label">Turn</label>
+    <div class="controls">
+      <div class="btn-group">
+        <button class="btn" data-bind="enable: buttonOnEnabled, click: turnOn">On</button>
+        <button class="btn" data-bind="enable: buttonOffEnabled, click: turnOff">Off</button>
+      </div>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">Brightness</label>
+    <div class="controls">
+      <input type="range" min="0" max="255" class="slider" data-bind="enable: isOperational, value: brightness, valueUpdate: 'input'">
+      <div class="input-append">
+        <input type="number" min="0" max="100" class="input-mini" data-bind="value: brightnessPercentage" disabled>
+        <span class="add-on">%</span>
+      </div>
+    </div>
+  </div>
+  <div class="control-group">
+    <label class="control-label">Current Status</label>
+    <div class="controls">
+      <input type="text" class="input-mini" data-bind="value: currentStatus" disabled>
+      <button class="btn" data-bind="enable: isOperational, click: sync">Sync</button>
+    </div>
+  </div>
+</form>
