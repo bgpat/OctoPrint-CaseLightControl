@@ -1,6 +1,8 @@
 # OctoPrint-CaseLightControl
 
-**TODO:** Describe what your plugin does.
+This plugin controls the brightness of the case light via `M355` G-code command.
+
+![screenshot](screenshot.png)
 
 ## Setup
 
@@ -9,9 +11,6 @@ or manually using this URL:
 
     https://github.com/bgpat/OctoPrint-CaseLightControl/archive/master.zip
 
-**TODO:** Describe how to install your plugin, if more needs to be done than just installing it via pip or through
-the plugin manager.
+## Supported Firmware
 
-## Configuration
-
-**TODO:** Describe your plugin's configuration options (if any).
+- [x] [Marlin](https://marlinfw.org/)
